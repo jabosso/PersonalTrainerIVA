@@ -17,27 +17,14 @@ elif MODE is "MPI" :
     weightsFile = "pose\mpi\pose_iter_160000.caffemodel"
     nPoints = 15
     POSE_PAIRS = [[0,1], [1,2], [2,3], [3,4], [1,5], [5,6], [6,7], [1,14], [14,8], [8,9], [9,10], [14,11], [11,12], [12,13] ]
-    
-#frame = cv2.imread("karate.jpg")
-#frameCopy = np.copy(frame)
-#frameWidth = frame.shape[1]
-#frameHeight = frame.shape[0]
-#frameHeight = frame.shape[0]
-#
-
-
 net = cv2.dnn.readNetFromCaffe(protoFile, weightsFile)
-
 inWidth = 368
 inHeight = 368
 threshold = 0.1
-
 input_source = "io.mp4"
 cap = cv2.VideoCapture(input_source)
 hasFrame, frame = cap.read()
-
 vid_writer = cv2.VideoWriter('output.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (frame.shape[1],frame.shape[0]))
-
 while cv2.waitKey(1) < 0:
     t = time.time()
     hasFrame, frame = cap.read()
@@ -45,10 +32,8 @@ while cv2.waitKey(1) < 0:
     if not hasFrame:
         cv2.waitKey()
         break
-
     frameWidth = frame.shape[1]
     frameHeight = frame.shape[0]
-
     inpBlob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (inWidth, inHeight),
                               (0, 0, 0), swapRB=False, crop=False)
     net.setInput(inpBlob)
