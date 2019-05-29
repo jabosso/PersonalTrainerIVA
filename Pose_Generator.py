@@ -20,7 +20,7 @@ elif MODE is "MPI" :
 net = cv2.dnn.readNetFromCaffe(protoFile, weightsFile)
 inWidth = 368
 inHeight = 368
-threshold = 0.1
+threshold = 0.4
 input_source = "data/prova.mp4"
 cap = cv2.VideoCapture(input_source)
 hasFrame, frame = cap.read()
