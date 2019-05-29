@@ -21,9 +21,18 @@ net = cv2.dnn.readNetFromCaffe(protoFile, weightsFile)
 inWidth = 368
 inHeight = 368
 threshold = 0.1
-input_source = "io.mp4"
+input_source = "data/prova.mp4"
 cap = cv2.VideoCapture(input_source)
 hasFrame, frame = cap.read()
+
+
+colors = [[255, 0, 0], [255, 85, 0], [255, 170, 0], [255, 255, 0], [170, 255, 0], [85, 255, 0], [0, 255, 0], \
+          [0, 255, 85], [0, 255, 170], [0, 255, 255], [0, 170, 255], [0, 85, 255], [0, 0, 255], [85, 0, 255], \
+          [170, 0, 255], [255, 0, 255], [255, 0, 170], [255, 0, 85]]
+
+
+
+
 vid_writer = cv2.VideoWriter('output.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (frame.shape[1],frame.shape[0]))
 while cv2.waitKey(1) < 0:
     t = time.time()
@@ -56,8 +65,8 @@ while cv2.waitKey(1) < 0:
         y = (frameHeight * point[1]) / H
 
         if prob > threshold : 
-            cv2.circle(blank_image, (int(x), int(y)), 8, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
-            cv2.putText(blank_image, "{}".format(i), (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA)
+            cv2.circle(blank_image, (int(x), int(y)), 8, colors[i], thickness=-1, lineType=cv2.FILLED)
+            #cv2.putText(blank_image, "{}".format(i), (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA)
 
             # Add the point to the list if the probability is greater than the threshold
             points.append((int(x), int(y)))
@@ -66,13 +75,14 @@ while cv2.waitKey(1) < 0:
 
 # Draw Skeleton
 
-
+    l=0
     for pair in POSE_PAIRS:
+        l=l+1
         partA = pair[0]
         partB = pair[1]
 
         if points[partA] and points[partB]:
-            cv2.line(blank_image, points[partA], points[partB], (0, 255, 255), 3, lineType=cv2.LINE_AA)
+            cv2.line(blank_image, points[partA], points[partB], colors[l], 3, lineType=cv2.LINE_AA)
             print(points)
     cv2.putText(blank_image, "time taken = {:.2f} sec".format(time.time() - t), (50, 50), cv2.FONT_HERSHEY_COMPLEX, .8, (255, 50, 0), 2, lineType=cv2.LINE_AA)
     # cv2.putText(frame, "OpenPose using OpenCV", (50, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 50, 0), 2, lineType=cv2.LINE_AA)
